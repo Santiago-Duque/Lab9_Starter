@@ -167,9 +167,15 @@
       console.trace("tracing!");
     });
 
-    let num = -4;
-    if (num < 0) {
-      throw new Error("The number (-4) is less than 0");
+    let sign = 'positive';
+    try {
+      console.assert(sign == 'positive', "the sign is positive!");
+    }
+    catch (err) {
+      console.log("negative");
+    }
+    finally {
+      console.log("Thanks for watching! (from finally)");
     }
     
   </script>
