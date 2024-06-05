@@ -167,16 +167,31 @@
       console.trace("tracing!");
     });
 
-    let sign = 'positive';
-    try {
-      console.assert(sign == 'positive', "the sign is positive!");
+    class customErr extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "customErr";
+      }
     }
-    catch (err) {
-      console.log("negative");
+
+    function divide(a, b) {
+      try {
+        if (b == 0) {
+          throw new Error("Error thrown in try/catch/finally code: Can't divide by 0.");
+        }
+        return a/b;
+      }
+      catch (err) {
+        console.error(err);
+        return "Invalid operation!";
+      }
+      finally {
+        throw new customErr("Don't mind me, this is my custom error");
+      }
     }
-    finally {
-      console.log("Thanks for watching! (from finally)");
-    }
+
+    let result = divide(5, 0);
+    console.log(result);
     
   </script>
 </body>
