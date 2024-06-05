@@ -86,7 +86,15 @@
       <button id = 'global-error'>Trigger a Global Error</button>
     </section>
   </main>
-
+  
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "1c0ef03f2ab242d49dc778974eecd2c3"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+                          
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -167,10 +175,10 @@
       console.trace("tracing!");
     });
 
-    class customErr extends Error {
+    class customError extends Error {
       constructor(message) {
         super(message);
-        this.name = "customErr";
+        this.name = "customError";
       }
     }
 
@@ -186,13 +194,28 @@
         return "Invalid operation!";
       }
       finally {
-        throw new customErr("Don't mind me, this is my custom error");
+        console.log("FINALLYUGHHH");
       }
     }
 
     let result = divide(5, 0);
     console.log(result);
+
+    function globalError() {
+      throw new customError("Global Error!");
+    }
     
+    window.onerror = function(event, source, lineno, colno, error) {
+      console.log("Global Error: " + event);
+      console.log("Source: " + source);
+      console.log("Line Number: " + lineno);
+      console.log("Column Number: " + colno);
+      console.log("Error: " + error);
+    }
+
+    document.getElementById('global-error').addEventListener('click', () => {
+      globalError();
+    });
   </script>
 </body>
 
